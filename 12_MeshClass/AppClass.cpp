@@ -11,6 +11,22 @@ void Application::InitVariables(void)
 	m_pMesh = new MyMesh();
 	m_pMesh->GenerateCube(2.0f, C_BROWN);
 
+
+	uint alien[8][11] = {
+		{ 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0 },
+		{ 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 },
+		{ 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0 },
+		{ 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0 },
+		{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		{ 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1 },
+		{ 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1 },
+		{ 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0 }
+	};
+
+	//for (uint i = 0; i < 46; ++i) {
+	//	MyMesh* pMesh = new MyMesh();
+	//}
+
 	//Make MyMesh object
 	m_pMesh1 = new MyMesh();
 	m_pMesh1->GenerateCube(1.0f, C_WHITE);
@@ -31,21 +47,27 @@ void Application::Display(void)
 	// Clear the screen
 	ClearScreen();
 
-	m_pMesh->Render(m_pCameraMngr->GetProjectionMatrix(), m_pCameraMngr->GetViewMatrix(), ToMatrix4(m_qArcBall));
-	m_pMesh1->Render(m_pCameraMngr->GetProjectionMatrix(), m_pCameraMngr->GetViewMatrix(), glm::translate(vector3( 3.0f, 0.0f, 0.0f)));
-		
+	matrix4 m4Projection = m_pCameraMngr->GetProjectionMatrix();
+	matrix4 m4View = m_pCameraMngr->GetViewMatrix();
+	static matrix4 m4Model;
+
+	m4Model = glm::translate(m4Model, vector3(0.1f, 0.0f, 0.0f));
+
+	m_pMesh->Render(m4Projection, m4View, m4Model);
+
+
 	// draw a skybox
 	m_pMeshMngr->AddSkyboxToRenderList();
-	
+
 	//render list call
 	m_uRenderCallCount = m_pMeshMngr->Render();
 
 	//clear the render list
 	m_pMeshMngr->ClearRenderList();
-	
+
 	//draw gui
 	DrawGUI();
-	
+
 	//end the current frame (internally swaps the front and back buffers)
 	m_pWindow->display();
 }
