@@ -2,11 +2,7 @@
 void Application::InitVariables(void)
 {
 	////Change this to your name and email
-	m_sProgrammer = "Aidan Kaufman - ak3012@rit.edu";
-
-	////Alberto needed this at this position for software recording.
-	//m_pWindow->setPosition(sf::Vector2i(710, 0));
-	
+	m_sProgrammer = "Aidan Kaufman - ak3012@rit.edu";	
 
 	//init the mesh
 	m_pMesh = new MyMesh();
