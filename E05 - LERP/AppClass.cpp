@@ -2,7 +2,7 @@
 void Application::InitVariables(void)
 {
 	////Change this to your name and email
-	//m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	m_sProgrammer = "Aidan Kaufman - ak3012@rit.edu";
 
 	////Alberto needed this at this position for software recording.
 	//m_pWindow->setPosition(sf::Vector2i(710, 0));
@@ -76,7 +76,7 @@ void Application::Display(void)
 	if (fPercent > 1.0f) {
 		fTimer = 0;
 		++i;
-		if (i > m_stopsList.size()) {
+		if (i >= m_stopsList.size()) {
 			i = 0;
 		}
 	}
