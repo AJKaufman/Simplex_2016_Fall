@@ -62,7 +62,26 @@ void Application::Display(void)
 
 
 	//your code goes here
-	v3CurrentPos = vector3(0.0f, 0.0f, 0.0f);
+	static uint i = 0;
+	float fAnimationLasts = 2.0f;
+	float fPercent = MapValue(fTimer, 0.0f, fAnimationLasts, 0.0f, 1.0f);
+
+	if (i+1 >= m_stopsList.size()) {
+		v3CurrentPos = glm::lerp(m_stopsList[i], m_stopsList[0], fPercent);
+	}
+	else {
+		v3CurrentPos = glm::lerp(m_stopsList[i], m_stopsList[i + 1], fPercent);
+	}
+
+	if (fPercent > 1.0f) {
+		fTimer = 0;
+		++i;
+		if (i > m_stopsList.size()) {
+			i = 0;
+		}
+	}
+
+
 	//-------------------
 	
 
