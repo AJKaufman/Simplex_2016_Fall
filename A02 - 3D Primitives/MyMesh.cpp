@@ -276,7 +276,36 @@ void MyMesh::GenerateCone(float a_fRadius, float a_fHeight, int a_nSubdivisions,
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	std::vector<vector3> m_topList;
+
+	// Calculate theta by dividing 360, a circle, by the amount of points in said circle.
+	float theta = 2.0f * PI / a_nSubdivisions;
+
+
+	// Make a list of the vertexes representing the bottom and top of the cone
+	for (uint i = 0; i < a_nSubdivisions; ++i) {
+		m_topList.push_back(vector3(a_fRadius * glm::cos(i * theta), a_fHeight, a_fRadius * glm::sin(i * theta)));
+	}
+
+	// Fill in the bottom and top triangles of the cone
+	for (uint i = 0; i < a_nSubdivisions; ++i) {
+		if (i + 1 >= m_topList.size()) {
+			AddTri(vector3(0.0f, a_fHeight, 0.0f), m_topList[i], m_topList[0]);
+		}
+		else {
+			AddTri(vector3(0.0f, a_fHeight, 0.0f), m_topList[i], m_topList[i + 1]);
+		}
+	}
+
+	// Fill in the sides of the cone
+	for (int i = a_nSubdivisions - 1; i >= 0; --i) {
+		if (i <= 0) {
+			AddTri(m_topList[i], m_topList[a_nSubdivisions - 1], vector3(0.0f, 0.0f, 0.0f));
+		}
+		else {
+			AddTri(m_topList[i], m_topList[i - 1], vector3(0.0f, 0.0f, 0.0f));
+		}
+	}
 	// -------------------------------
 
 	// Adding information about color
@@ -331,6 +360,17 @@ void MyMesh::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubdivisi
 		}
 	}
 
+	// Fill in the sides of the cylinder
+	for (int i = a_nSubdivisions - 1; i >= 0; --i) {
+		if (i <= 0) {
+			AddQuad(m_topList[i], m_topList[a_nSubdivisions - 1], m_bottomList[i], m_bottomList[a_nSubdivisions - 1]);
+		}
+		else {
+			AddQuad(m_topList[i], m_topList[i - 1], m_bottomList[i], m_bottomList[i - 1]);
+		}
+	}
+
+
 	// -------------------------------
 
 	// Adding information about color
@@ -360,7 +400,61 @@ void MyMesh::GenerateTube(float a_fOuterRadius, float a_fInnerRadius, float a_fH
 	Init();
 
 	// Replace this with your code
-	GenerateCube(a_fOuterRadius * 2.0f, a_v3Color);
+	std::vector<vector3> m_outerBottomList;
+	std::vector<vector3> m_outerTopList;
+	std::vector<vector3> m_innerBottomList;
+	std::vector<vector3> m_innerTopList;
+
+	// Calculate theta by dividing 360, a circle, by the amount of points in said circle.
+	float theta = 2.0f * PI / a_nSubdivisions;
+
+
+	// Make a list of the vertexes representing the inner and outer bottom and top of the tube
+	for (uint i = 0; i < a_nSubdivisions; ++i) {
+		m_outerBottomList.push_back(vector3(a_fOuterRadius * glm::cos(i * theta), a_fOuterRadius * glm::sin(i * theta), 0.0f));
+		m_outerTopList.push_back(vector3(a_fOuterRadius * glm::cos(i * theta), a_fOuterRadius * glm::sin(i * theta), a_fHeight));
+
+		m_innerBottomList.push_back(vector3(a_fInnerRadius * glm::cos(i * theta), a_fInnerRadius * glm::sin(i * theta), 0.0f));
+		m_innerTopList.push_back(vector3(a_fInnerRadius * glm::cos(i * theta), a_fInnerRadius * glm::sin(i * theta), a_fHeight));
+	}
+
+	// Fill in the bottom and top quads of the tube
+	for (int i = a_nSubdivisions - 1; i >= 0; --i) {
+		if (i - 1 < 0) {
+			AddQuad(m_outerBottomList[i], m_outerBottomList[m_outerBottomList.size() - 1], m_innerBottomList[i], m_innerBottomList[m_innerBottomList.size() - 1]);
+		}
+		else {
+			AddQuad(m_outerBottomList[i], m_outerBottomList[i - 1], m_innerBottomList[i], m_innerBottomList[i - 1]);
+		}
+	}
+	for (uint i = 0; i < a_nSubdivisions; ++i) {
+		if (i + 1 >= m_outerTopList.size()) {
+			AddQuad(m_outerTopList[i], m_outerTopList[0], m_innerTopList[i], m_innerTopList[0]);
+		}
+		else {
+			AddQuad(m_outerTopList[i], m_outerTopList[i + 1], m_innerTopList[i], m_innerTopList[i + 1]);
+		}
+	}
+
+	// Fill in the sides of the tube
+	for (int i = a_nSubdivisions - 1; i >= 0; --i) {
+		if (i <= 0) {
+			AddQuad(m_outerTopList[i], m_outerTopList[a_nSubdivisions - 1], m_outerBottomList[i], m_outerBottomList[a_nSubdivisions - 1]);
+		}
+		else {
+			AddQuad(m_outerTopList[i], m_outerTopList[i - 1], m_outerBottomList[i], m_outerBottomList[i - 1]);
+		}
+	}
+	for (int i = 0; i <= a_nSubdivisions - 1; ++i) {
+		if (i >= a_nSubdivisions - 1) {
+			AddQuad(m_innerTopList[i], m_innerTopList[0], m_innerBottomList[i], m_innerBottomList[0]);
+		}
+		else {
+			AddQuad(m_innerTopList[i], m_innerTopList[i + 1], m_innerBottomList[i], m_innerBottomList[i + 1]);
+		}
+	}
+
+
 	// -------------------------------
 
 	// Adding information about color
@@ -410,14 +504,28 @@ void MyMesh::GenerateSphere(float a_fRadius, int a_nSubdivisions, vector3 a_v3Co
 		GenerateCube(a_fRadius * 2.0f, a_v3Color);
 		return;
 	}
-	if (a_nSubdivisions > 6)
-		a_nSubdivisions = 6;
+	if (a_nSubdivisions > 8)
+		a_nSubdivisions = 8;
 
 	Release();
 	Init();
 
-	// Replace this with your code
-	GenerateCube(a_fRadius * 2.0f, a_v3Color);
+	// Calculate theta and phi by dividing 360, a circle, by the amount of points in said circle.
+	float theta = 2.0f * PI / a_nSubdivisions;
+	float phi = PI / a_nSubdivisions;
+
+	// Add quads using theta and phi
+	for (uint i = 0; i < a_nSubdivisions; ++i) {
+		for (uint j = 0; j < a_nSubdivisions; ++j) {
+			AddQuad(
+				vector3(a_fRadius * glm::cos(theta * i) * glm::sin(phi * j), a_fRadius * glm::sin(theta * i) * glm::sin(phi * j), a_fRadius * glm::cos(phi * j)),
+				vector3(a_fRadius * glm::cos(theta * i) * glm::sin(phi * (j + 1)), a_fRadius * glm::sin(theta * i) * glm::sin(phi * (j + 1)), a_fRadius * glm::cos(phi * (j + 1))),
+				vector3(a_fRadius * glm::cos(theta * (i + 1)) * glm::sin(phi * j), a_fRadius * glm::sin(theta * (i + 1)) * glm::sin(phi * j), a_fRadius * glm::cos(phi * j)),
+				vector3(a_fRadius * glm::cos(theta * (i + 1)) * glm::sin(phi * (j + 1)), a_fRadius * glm::sin(theta * (i + 1)) * glm::sin(phi * (j + 1)), a_fRadius * glm::cos(phi * (j + 1)))
+			); 
+		}
+	}
+
 	// -------------------------------
 
 	// Adding information about color
