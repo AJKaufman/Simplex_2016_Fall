@@ -304,22 +304,30 @@ void MyMesh::GenerateCylinder(float a_fRadius, float a_fHeight, int a_nSubdivisi
 	std::vector<vector3> m_topList;
 
 	// Calculate theta by dividing 360, a circle, by the amount of points in said circle.
-	float theta = 360.0f / a_nSubdivisions;
+	float theta = 2.0f * PI / a_nSubdivisions;
 
 
 	// Make a list of the vertexes representing the bottom and top of the cylinder
 	for (uint i = 0; i < a_nSubdivisions; ++i) {
 		m_bottomList.push_back(vector3(a_fRadius * glm::cos(i * theta), a_fRadius * glm::sin(i * theta), 0.0f));
-		m_topList.push_back(vector3(a_fRadius * glm::cos(i * theta), a_fRadius * glm::sin(i * theta), 0.0f));
+		m_topList.push_back(vector3(a_fRadius * glm::cos(i * theta), a_fRadius * glm::sin(i * theta), a_fHeight));
 	}
 
 	// Fill in the bottom and top triangles of the cylinder
-	for (uint i = 0; i < a_nSubdivisions; ++i) {
-		if (i + 1 >= m_bottomList.size()) {
-			AddTri(vector3(0.0f, 0.0f, 0.0f), m_bottomList[i], m_bottomList[0]);
+	for (int i = a_nSubdivisions - 1; i >= 0; --i) {
+		if (i - 1 < 0) {
+			AddTri(vector3(0.0f, 0.0f, 0.0f), m_bottomList[i], m_bottomList[m_bottomList.size() - 1]);
 		}
 		else {
-			AddTri(vector3(0.0f, 0.0f, 0.0f), m_bottomList[i], m_bottomList[i + 1]);
+			AddTri(vector3(0.0f, 0.0f, 0.0f), m_bottomList[i], m_bottomList[i - 1]);
+		}
+	}
+	for (uint i = 0; i < a_nSubdivisions; ++i) {
+		if (i + 1 >= m_topList.size()) {
+			AddTri(vector3(0.0f, 0.0f, a_fHeight), m_topList[i], m_topList[0]);
+		}
+		else {
+			AddTri(vector3(0.0f, 0.0f, a_fHeight), m_topList[i], m_topList[i + 1]);
 		}
 	}
 
