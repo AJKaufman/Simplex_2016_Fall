@@ -36,6 +36,9 @@ void Application::InitVariables(void)
 	*/
 	uint uSides = 3; // start with the minimal 3 sides
 	float radius = 0.5f; // the offset used to distance the verts of the circles from the last circle
+	
+	// Use this to calculate the the verts and store them
+
 	for (uint i = uSides; i < m_uOrbits + uSides; i++)
 	{
 
@@ -91,19 +94,21 @@ void Application::Display(void)
 	vector3 v3CurrentPos; //calculate the current position
 	bool resetting = false;
 
+	// Use these to keep track of the lerp
+
 	float fAnimationLasts = 0.5f;
 	float fPercent = MapValue(fTimer, 0.0f, fAnimationLasts, 0.0f, 1.0f);
+
+	// Start the each vertex at 0
 
 	static std::vector<uint> jList;
 	for (uint i = 0; i < m_uOrbits; ++i) {
 		jList.push_back(0);
 	}
 
-	// draw a shapes
+	// draw the shapes
 	for (uint i = 0; i < m_uOrbits; ++i)
 	{
-
-
 
 		// Lerp between the most recently touched point and the next point in our vector of vector of vec3s
 
@@ -124,7 +129,7 @@ void Application::Display(void)
 			jList[i]++;
 
 
-			// Reset the values of the jList vector so that they 
+			// Tell the sphere to reset its jList variable 
 
 			if (resetting) {
 
