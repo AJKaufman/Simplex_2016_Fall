@@ -2,7 +2,7 @@
 void Application::InitVariables(void)
 {
 	////Change this to your name and email
-	//m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	m_sProgrammer = "Aidan Kaufman - ak3012@rit.edu";
 
 	////Alberto needed this at this position for software recording.
 	//m_pWindow->setPosition(sf::Vector2i(710, 0));
@@ -34,9 +34,28 @@ void Application::InitVariables(void)
 	/*
 		This part will create the orbits, it start at 3 because that is the minimum subdivisions a torus can have
 	*/
-	uint uSides = 3; //start with the minimal 3 sides
+	uint uSides = 3; // start with the minimal 3 sides
+	float radius = 0.5f; // the offset used to distance the verts of the circles from the last circle
+	
+	// Use this to calculate the the verts and store them
+
 	for (uint i = uSides; i < m_uOrbits + uSides; i++)
 	{
+
+		std::vector<vector3> m_currentCircleVerts;
+		float theta = 2.0f * PI / i;
+		radius += 0.5f;
+
+		for (uint j = 0; j < i; ++j) {
+			
+			// Fill a vector of vec3s
+			m_currentCircleVerts.push_back(vector3((radius * glm::cos(theta * j)), (radius * glm::sin(theta * j)), 0.0f));
+		}
+
+		// Fill our vector of vectors of vec3s with the current vector of vec3s
+		m_circleList.push_back(m_currentCircleVerts);
+
+		// Update the next torus ring
 		vector3 v3Color = WaveLengthToRGB(uColor); //calculate color based on wavelength
 		m_shapeList.push_back(m_pMeshMngr->GenerateTorus(fSize, fSize - 0.1f, 3, i, v3Color)); //generate a custom torus and add it to the meshmanager
 		fSize += 0.5f; //increment the size for the next orbit
@@ -65,15 +84,64 @@ void Application::Display(void)
 	/*
 		The following offset will orient the orbits as in the demo, start without it to make your life easier.
 	*/
-	//m4Offset = glm::rotate(IDENTITY_M4, 90.0f, AXIS_Z);
+	m4Offset = glm::rotate(IDENTITY_M4, 90.0f, AXIS_Z);
 
-	// draw a shapes
+
+	//Get a timer
+	static float fTimer = 0;	//store the new timer
+	static uint uClock = m_pSystem->GenClock(); //generate a new clock for that timer
+	fTimer += m_pSystem->GetDeltaTime(uClock); //get the delta time for that timer
+	vector3 v3CurrentPos; //calculate the current position
+	bool resetting = false;
+
+	// Use these to keep track of the lerp
+
+	float fAnimationLasts = 0.5f;
+	float fPercent = MapValue(fTimer, 0.0f, fAnimationLasts, 0.0f, 1.0f);
+
+	// Start the each vertex at 0
+
+	static std::vector<uint> jList;
+	for (uint i = 0; i < m_uOrbits; ++i) {
+		jList.push_back(0);
+	}
+
+	// draw the shapes
 	for (uint i = 0; i < m_uOrbits; ++i)
 	{
+
+		// Lerp between the most recently touched point and the next point in our vector of vector of vec3s
+
+		if (jList[i] + 1 >= m_circleList[i].size()) {
+			v3CurrentPos = glm::lerp(m_circleList[i][jList[i]], m_circleList[i][0], fPercent);
+
+			resetting = true;
+		}
+		else {
+			v3CurrentPos = glm::lerp(m_circleList[i][jList[i]], m_circleList[i][jList[i] + 1], fPercent);
+		}
+
+		// If the destination has been reached, reset the timer
+
+		if (fPercent > 1.0f) {
+			fTimer = 0;
+				
+			jList[i]++;
+
+
+			// Tell the sphere to reset its jList variable 
+
+			if (resetting) {
+
+				resetting = false;
+				jList[i] = 0;
+			}
+		}
+
 		m_pMeshMngr->AddMeshToRenderList(m_shapeList[i], glm::rotate(m4Offset, 90.0f, AXIS_X));
 
 		//calculate the current position
-		vector3 v3CurrentPos = ZERO_V3;
+		//vector3 v3CurrentPos = ZERO_V3;
 		matrix4 m4Model = glm::translate(m4Offset, v3CurrentPos);
 
 		//draw spheres
