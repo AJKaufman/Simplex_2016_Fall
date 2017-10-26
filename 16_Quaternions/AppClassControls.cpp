@@ -425,6 +425,8 @@ void Application::ProcessKeyboard(void)
 		m_v3Orientation.x++;
 		quaternion q1 = glm::angleAxis(1.0f, vector3(1.0f, 0.0f, 0.0f));
 		m_qOrientation = m_qOrientation * q1;
+		//vector3 v3Temp(glm::radians(m_v3Orientation.x), glm::radians(m_v3Orientation.y), glm::radians(m_v3Orientation.z));
+		//m_qOrientation = quaternion(vector3(v3Temp));
 		//example on how even a quaternion if generated though Euler will have Gimbal Lock
 		//vector3 v3Temp(glm::radians(m_v3Orientation.x), glm::radians(m_v3Orientation.y), glm::radians(m_v3Orientation.z));
 		//m_qOrientation = quaternion(vector3(v3Temp));
@@ -436,6 +438,8 @@ void Application::ProcessKeyboard(void)
 		m_v3Orientation.y++;
 		quaternion q1 = glm::angleAxis(1.0f, vector3(0.0f, 1.0f, 0.0f));
 		m_qOrientation = m_qOrientation * q1;
+		//vector3 v3Temp(glm::radians(m_v3Orientation.x), glm::radians(m_v3Orientation.y), glm::radians(m_v3Orientation.z));
+		//m_qOrientation = quaternion(vector3(v3Temp));
 		//example on how even a quaternion if generated though Euler will have Gimbal Lock
 		//vector3 v3Temp(glm::radians(m_v3Orientation.x), glm::radians(m_v3Orientation.y), glm::radians(m_v3Orientation.z));
 		//m_qOrientation = quaternion(vector3(v3Temp));
@@ -446,6 +450,8 @@ void Application::ProcessKeyboard(void)
 		m_v3Orientation.z++;
 		quaternion q1 = glm::angleAxis(1.0f, vector3(0.0f, 0.0f, 1.0f));
 		m_qOrientation = m_qOrientation * q1;
+		//vector3 v3Temp(glm::radians(m_v3Orientation.x), glm::radians(m_v3Orientation.y), glm::radians(m_v3Orientation.z));
+		//m_qOrientation = quaternion(vector3(v3Temp));
 		//example on how even a quaternion if generated though Euler will have Gimbal Lock
 		//vector3 v3Temp(glm::radians(m_v3Orientation.x), glm::radians(m_v3Orientation.y), glm::radians(m_v3Orientation.z));
 		//m_qOrientation = quaternion(vector3(v3Temp));

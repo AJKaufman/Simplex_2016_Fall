@@ -17,9 +17,9 @@ class Application
 	vector3 m_v3Orientation; //orientation for the Model in vectors
 	Simplex::Model* m_pModel = nullptr; //Model to display
 	matrix4 m_m4Steve; //Model to world matrix for Steve
-	quaternion m_qOrientation; //orientation for the Model in quaternions
+	quaternion m_qOrientation; //orientation for the Steve in quaternions
 
-	String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
+	String m_sProgrammer = "Aidan Kaufman - ak3012@rit.edu";
 
 private:
 	static ImGuiObject gui; //GUI object

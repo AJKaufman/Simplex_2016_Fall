@@ -2,10 +2,7 @@
 void Application::InitVariables(void)
 {
 	////Change this to your name and email
-	//m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu";
-
-	////Alberto needed this at this position for software recording.
-	//m_pWindow->setPosition(sf::Vector2i(710, 0));
+	//m_sProgrammer = "Aidan Kaufman - ak3012@rit.edu";
 
 	//Set the position and target of the camera
 	//(I'm at [0,0,10], looking at [0,0,0] and up is the positive Y axis)
@@ -32,6 +29,32 @@ void Application::Update(void)
 	static uint uClock = m_pSystem->GenClock();
 	float fTimer = m_pSystem->GetTimeSinceStart(uClock);
 	float fDeltaTime = m_pSystem->GetDeltaTime(uClock);
+
+	quaternion q1;
+	quaternion q2 = glm::angleAxis(180.0f, vector3(0.0f, 0.0f, 1.0f));
+	float fPercentage = MapValue(fTimer, 0.0f, 5.0f, 0.0f, 1.0f);
+	quaternion qSLERP = glm::mix(q1, q2, fPercentage);
+	m_m4Steve = glm::toMat4(qSLERP);
+	/*
+	// translate vector orientation into a matrix
+	matrix4 m4OrientX = glm::rotate(IDENTITY_M4, m_v3Orientation.x, vector3(1.0f, 0.0f, 0.0f));
+	matrix4 m4OrientY = glm::rotate(IDENTITY_M4, m_v3Orientation.y, vector3(0.0f, 1.0f, 0.0f));
+	matrix4 m4OrientZ = glm::rotate(IDENTITY_M4, m_v3Orientation.z, vector3(0.0f, 0.0f, 1.0f));
+
+	matrix4 m4Orientation = m4OrientX * m4OrientY * m4OrientZ;
+	m_m4Steve = glm::toMat4(qStart);
+	*/
+
+	// Orientation using quaternions
+	/*
+	m_m4Steve = glm::toMat4(m_qOrientation); 
+	*/
+
+	// Attach the model matrix that takes me from the world coordinate system
+	m_pModel->SetModelMatrix(m_m4Steve);
+
+	// Send the model to render list
+	m_pModel->AddToRenderList();
 
 #pragma region SLERP
 	if (false)
