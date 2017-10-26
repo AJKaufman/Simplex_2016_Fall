@@ -1,6 +1,6 @@
 /*----------------------------------------------
-Programmer: Alberto Bobadilla (labigm@gmail.com)
-Date: 2017/06
+Programmer: Aidan Kaufman (ak3012@g.rit.edu)
+Date: 2017/10
 ----------------------------------------------*/
 #ifndef __MYCAMERACLASS_H_
 #define __MYCAMERACLASS_H_

@@ -52,6 +52,15 @@ void Application::Display(void)
 	
 	//draw a skybox
 	m_pMeshMngr->AddSkyboxToRenderList();
+	float fRatio = m_pSystem->GetWindowRatio();
+
+	matrix4 m4Projection = glm::perspective(45.0f, fRatio, 0.01f, 1000.0f);
+	vector3 v3Target = m_v3Pos;
+	v3Target.z -= 1.0f;
+	matrix4 m4View = glm::lookAt(vector3(0.0f, 0.0f, 30.0f) + m_v3Pos, v3Target, vector3(0.0f, 1.0f, 0.0f));
+	matrix4 m4Model = ToMatrix4(m_qArcBall);
+
+	m_pMesh->Render(m4Projection, m4View, m4Model);
 
 	static float fPos = 0.0f;
 	m_pCamera->SetPosition(vector3(fPos, 0.0f, 10.0f));
