@@ -30,11 +30,11 @@ void Application::Update(void)
 	float fTimer = m_pSystem->GetTimeSinceStart(uClock);
 	float fDeltaTime = m_pSystem->GetDeltaTime(uClock);
 
-	quaternion q1;
-	quaternion q2 = glm::angleAxis(180.0f, vector3(0.0f, 0.0f, 1.0f));
-	float fPercentage = MapValue(fTimer, 0.0f, 5.0f, 0.0f, 1.0f);
-	quaternion qSLERP = glm::mix(q1, q2, fPercentage);
-	m_m4Steve = glm::toMat4(qSLERP);
+	//quaternion q1;
+	//quaternion q2 = glm::angleAxis(359.9f, vector3(0.0f, 0.0f, 1.0f));
+	//float fPercentage = MapValue(fTimer, 0.0f, 5.0f, 0.0f, 1.0f);
+	//quaternion qSLERP = glm::mix(q1, q2, fPercentage);
+	//m_m4Steve = glm::toMat4(qSLERP);
 	/*
 	// translate vector orientation into a matrix
 	matrix4 m4OrientX = glm::rotate(IDENTITY_M4, m_v3Orientation.x, vector3(1.0f, 0.0f, 0.0f));
@@ -50,11 +50,11 @@ void Application::Update(void)
 	m_m4Steve = glm::toMat4(m_qOrientation); 
 	*/
 
-	// Attach the model matrix that takes me from the world coordinate system
-	m_pModel->SetModelMatrix(m_m4Steve);
-
-	// Send the model to render list
-	m_pModel->AddToRenderList();
+	//// Attach the model matrix that takes me from the world coordinate system
+	//m_pModel->SetModelMatrix(m_m4Steve);
+	//
+	//// Send the model to render list
+	//m_pModel->AddToRenderList();
 
 #pragma region SLERP
 	if (false)
