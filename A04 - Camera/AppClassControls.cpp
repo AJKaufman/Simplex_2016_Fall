@@ -8,9 +8,27 @@ void Application::ProcessMouseMovement(sf::Event a_event)
 	sf::Vector2i window = m_pWindow->getPosition();
 	m_v3Mouse.x = static_cast<float>(mouse.x - window.x);
 	m_v3Mouse.y = static_cast<float>(mouse.y - window.y);
+
+	vector3 tempVec3 = m_v3Mouse;
+
 	if(!m_pSystem->IsWindowFullscreen() && !m_pSystem->IsWindowBorderless())
 		m_v3Mouse += vector3(-8.0f, -32.0f, 0.0f);
+
 	gui.io.MousePos = ImVec2(m_v3Mouse.x, m_v3Mouse.y);
+
+	// If the right mouse button is being clicked, move the camera
+
+	if (gui.io.MouseDown[2] && m_v3Mouse.x != static_cast<float>(mouse.x - window.x)) {
+
+
+		float xCurrent = m_pCamera->GetPosition().x;
+		float yCurrent = m_pCamera->GetPosition().y;
+		float zCurrent = m_pCamera->GetPosition().z;
+
+		m_pCamera->SetPositionTargetAndUp(vector3(xCurrent, yCurrent, zCurrent + (m_v3Mouse.x - (static_cast<float>(mouse.x - window.x))) * 0.01), vector3(xCurrent, yCurrent, -1000), vector3(-(xCurrent), 0.0f, 1.0f));
+
+	}
+	
 }
 void Application::ProcessMousePressed(sf::Event a_event)
 {
@@ -67,10 +85,28 @@ void Application::ProcessMouseScroll(sf::Event a_event)
 //Keyboard
 void Application::ProcessKeyPressed(sf::Event a_event)
 {
+	// Create the current location variables
+
+	float xCurrent = m_pCamera->GetPosition().x;
+	float yCurrent = m_pCamera->GetPosition().y;
+	float zCurrent = m_pCamera->GetPosition().z;
+
 	switch (a_event.key.code)
 	{
 	default: break;
 	case sf::Keyboard::Space:
+		break;
+	case sf::Keyboard::W:
+		m_pCamera->SetPositionTargetAndUp(vector3(xCurrent, yCurrent, zCurrent - 1.0f), vector3(xCurrent, yCurrent, -1000), vector3(-(xCurrent), 0.0f, 1.0f));
+		break;
+	case sf::Keyboard::A:
+		m_pCamera->SetPositionTargetAndUp(vector3(xCurrent - 1.0f, yCurrent, zCurrent), vector3(xCurrent, yCurrent, -1000), vector3(-(xCurrent - 1.0f), 0.0f, 1.0f));
+		break;
+	case sf::Keyboard::S:
+		m_pCamera->SetPositionTargetAndUp(vector3(xCurrent, yCurrent, zCurrent + 1.0f), vector3(xCurrent, yCurrent, -1000), vector3(-(xCurrent), 0.0f, 1.0f));
+		break;
+	case sf::Keyboard::D:
+		m_pCamera->SetPositionTargetAndUp(vector3(xCurrent + 1.0f, yCurrent, zCurrent), vector3(xCurrent, yCurrent, -1000), vector3(-(xCurrent + 1.0f), 0.0f, 1.0f));
 		break;
 	}
 	//gui

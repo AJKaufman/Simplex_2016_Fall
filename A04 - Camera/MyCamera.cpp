@@ -154,3 +154,9 @@ void Simplex::MyCamera::CalculateProjectionMatrix(void)
 										m_v2NearFar.x, m_v2NearFar.y); //near and far
 	}
 }
+
+// Returns a vector3 with the camera's global coordinates
+
+vector3 Simplex::MyCamera::GetPosition(void) {
+	return m_v3Position;
+}
