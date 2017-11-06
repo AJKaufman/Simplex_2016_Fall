@@ -133,6 +133,19 @@ void Simplex::MyCamera::SetPositionTargetAndUp(vector3 a_v3Position, vector3 a_v
 	CalculateProjectionMatrix();
 }
 
+void Simplex::MyCamera::SetPosition(vector3 a_v3Position, vector3 a_v3Upward)
+{
+	m_v3Position = a_v3Position;
+	m_v3Up = a_v3Position + a_v3Upward;
+	CalculateProjectionMatrix();
+}
+
+void Simplex::MyCamera::SetTarget(vector3 a_v3Position, vector3 a_v3Target, vector3 a_v3Upward)
+{
+	m_v3Target = a_v3Target;
+	CalculateProjectionMatrix();
+}
+
 void Simplex::MyCamera::CalculateViewMatrix(void)
 {
 	//Calculate the look at

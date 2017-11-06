@@ -16,18 +16,7 @@ void Application::ProcessMouseMovement(sf::Event a_event)
 
 	gui.io.MousePos = ImVec2(m_v3Mouse.x, m_v3Mouse.y);
 
-	// If the right mouse button is being clicked, move the camera
-
-	if (gui.io.MouseDown[2] && m_v3Mouse.x != static_cast<float>(mouse.x - window.x)) {
-
-
-		float xCurrent = m_pCamera->GetPosition().x;
-		float yCurrent = m_pCamera->GetPosition().y;
-		float zCurrent = m_pCamera->GetPosition().z;
-
-		m_pCamera->SetPositionTargetAndUp(vector3(xCurrent, yCurrent, zCurrent + (m_v3Mouse.x - (static_cast<float>(mouse.x - window.x))) * 0.01), vector3(xCurrent, yCurrent, -1000), vector3(-(xCurrent), 0.0f, 1.0f));
-
-	}
+	
 	
 }
 void Application::ProcessMousePressed(sf::Event a_event)
@@ -97,15 +86,27 @@ void Application::ProcessKeyPressed(sf::Event a_event)
 	case sf::Keyboard::Space:
 		break;
 	case sf::Keyboard::W:
+
+		// Move forward as long as the w key is held
+
 		m_pCamera->SetPositionTargetAndUp(vector3(xCurrent, yCurrent, zCurrent - 1.0f), vector3(xCurrent, yCurrent, -1000), vector3(-(xCurrent), 0.0f, 1.0f));
 		break;
 	case sf::Keyboard::A:
+
+		// Move left as long as the a key is held
+
 		m_pCamera->SetPositionTargetAndUp(vector3(xCurrent - 1.0f, yCurrent, zCurrent), vector3(xCurrent, yCurrent, -1000), vector3(-(xCurrent - 1.0f), 0.0f, 1.0f));
 		break;
 	case sf::Keyboard::S:
+
+		// Move back as long as the s key is held
+
 		m_pCamera->SetPositionTargetAndUp(vector3(xCurrent, yCurrent, zCurrent + 1.0f), vector3(xCurrent, yCurrent, -1000), vector3(-(xCurrent), 0.0f, 1.0f));
 		break;
 	case sf::Keyboard::D:
+
+		// Move right as long as the d key is held
+
 		m_pCamera->SetPositionTargetAndUp(vector3(xCurrent + 1.0f, yCurrent, zCurrent), vector3(xCurrent, yCurrent, -1000), vector3(-(xCurrent + 1.0f), 0.0f, 1.0f));
 		break;
 	}
@@ -340,11 +341,14 @@ void Application::ArcBall(float a_fSensitivity)
 	{
 		DeltaMouse = static_cast<float>(CenterX - MouseX);
 		m_qArcBall = quaternion(vector3(0.0f, glm::radians(a_fSensitivity * DeltaMouse), 0.0f)) * m_qArcBall;
+		
+		
 	}
 	else if (MouseX > CenterX)
 	{
 		DeltaMouse = static_cast<float>(MouseX - CenterX);
 		m_qArcBall = quaternion(vector3(0.0f, glm::radians(-a_fSensitivity * DeltaMouse), 0.0f)) * m_qArcBall;
+		
 	}
 
 	if (MouseY < CenterY)
@@ -379,6 +383,12 @@ void Application::CameraRotation(float a_fSpeed)
 	MouseX = pt.x;
 	MouseY = pt.y;
 
+	// Find the current position for camera adjustments in the following if statements
+
+	float xCurrent = m_pCamera->GetPosition().x;
+	float yCurrent = m_pCamera->GetPosition().y;
+	float zCurrent = m_pCamera->GetPosition().z;
+
 	//Calculate the difference in view with the angle
 	float fAngleX = 0.0f;
 	float fAngleY = 0.0f;
@@ -387,22 +397,44 @@ void Application::CameraRotation(float a_fSpeed)
 	{
 		fDeltaMouse = static_cast<float>(CenterX - MouseX);
 		fAngleY += fDeltaMouse * a_fSpeed;
+		
+		// Change the camera rotation if the right mouse button is being held down and the mouse is moving
+
+		m_pCamera->SetTarget(vector3(xCurrent, yCurrent, zCurrent), vector3(xCurrent, yCurrent, -zCurrent - fAngleY), vector3(-(xCurrent), 0.0f, 1.0f));
+
 	}
 	else if (MouseX > CenterX)
 	{
 		fDeltaMouse = static_cast<float>(MouseX - CenterX);
 		fAngleY -= fDeltaMouse * a_fSpeed;
+
+		// Change the camera rotation if the right mouse button is being held down and the mouse is moving
+
+		m_pCamera->SetTarget(vector3(xCurrent, yCurrent, zCurrent), vector3(xCurrent, yCurrent, -zCurrent - fAngleY), vector3(-(xCurrent), 0.0f, 1.0f));
+
 	}
 
 	if (MouseY < CenterY)
 	{
 		fDeltaMouse = static_cast<float>(CenterY - MouseY);
 		fAngleX -= fDeltaMouse * a_fSpeed;
+
+		// Change the camera rotation if the right mouse button is being held down and the mouse is moving
+
+		m_pCamera->SetTarget(vector3(xCurrent, yCurrent, zCurrent), vector3(xCurrent, yCurrent - fAngleX, -zCurrent), vector3(-(xCurrent), 0.0f, 1.0f));
+
+
 	}
 	else if (MouseY > CenterY)
 	{
 		fDeltaMouse = static_cast<float>(MouseY - CenterY);
 		fAngleX += fDeltaMouse * a_fSpeed;
+
+		// Change the camera rotation if the right mouse button is being held down and the mouse is moving
+
+		m_pCamera->SetTarget(vector3(xCurrent, yCurrent, zCurrent), vector3(xCurrent, yCurrent - fAngleX, -zCurrent), vector3(-(xCurrent), 0.0f, 1.0f));
+
+
 	}
 	//Change the Yaw and the Pitch of the camera
 	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
