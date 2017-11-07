@@ -87,6 +87,13 @@ void MyRigidBody::SetModelMatrix(matrix4 a_m4ModelMatrix)
 	//your code goes here---------------------
 	m_v3MinG = m_v3MinL;
 	m_v3MaxG = m_v3MaxL;
+
+	std::vector<vector3> vertexList;
+	vertexList.push_back(vector3(m_v3MaxG));
+
+
+	// vector3(world * vec4(vec, 1.0f))
+
 	//----------------------------------------
 
 	//we calculate the distance between min and max vectors
