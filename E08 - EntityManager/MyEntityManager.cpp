@@ -16,11 +16,22 @@ MyEntityManager* MyEntityManager::GetInstance()
 	}
 	return m_pInstance;
 }
+
+// Release the singleton
 void MyEntityManager::ReleaseInstance()
 {
+	delete m_pInstance;
+	m_pInstance = nullptr;
 }
+
+// Gets the index from our m_entityList
 int Simplex::MyEntityManager::GetEntityIndex(String a_sUniqueID)
 {
+
+	for (uint i = 0; i < m_entityList.size(); ++i) {
+		if (m_entityList[i] == a_sUniqueID) return i;
+	}
+
 	return -1;
 }
 //Accessors
