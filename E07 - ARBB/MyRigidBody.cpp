@@ -85,8 +85,47 @@ void MyRigidBody::SetModelMatrix(matrix4 a_m4ModelMatrix)
 	m_m4ToWorld = a_m4ModelMatrix;
 	
 	//your code goes here---------------------
-	m_v3MinG = m_v3MinL;
-	m_v3MaxG = m_v3MaxL;
+	//m_v3MinG = m_v3MinL;
+	//m_v3MaxG = m_v3MaxL;
+
+	// Create a list of vector3s
+	std::vector<vector3> vertexList;
+
+	// Near plane
+	vertexList.push_back(m_v3MinL);
+	vertexList.push_back(vector3(m_v3MaxL.x, m_v3MinL.y, m_v3MinL.z));
+	vertexList.push_back(vector3(m_v3MaxL.x, m_v3MaxL.y, m_v3MinL.z));
+	vertexList.push_back(vector3(m_v3MinL.x, m_v3MaxL.y, m_v3MinL.z));
+
+	// Far plane
+	vertexList.push_back(vector3(m_v3MaxL.x, m_v3MinL.y, m_v3MaxL.z));
+	vertexList.push_back(vector3(m_v3MinL.x, m_v3MinL.y, m_v3MaxL.z));
+	vertexList.push_back(vector3(m_v3MinL.x, m_v3MaxL.y, m_v3MaxL.z));
+	vertexList.push_back(m_v3MaxL);
+
+	// Convert these points to world space
+	for (uint i = 0; i < vertexList.size(); ++i) {
+		//vertexList[i].x -= m_v3MinL.x;
+		//vertexList[i].y -= m_v3MinL.y;
+		//vertexList[i].z -= m_v3MinL.z;
+		vertexList[i] = vector3(m_m4ToWorld * vector4(vertexList[i], 1.0f));
+	}
+
+	m_v3MaxG = m_v3MinG = vertexList[0];
+
+	// Find the max and min 
+	for (uint i = 0; i < vertexList.size(); ++i)
+	{
+		if (m_v3MaxG.x < vertexList[i].x) m_v3MaxG.x = vertexList[i].x;
+		else if (m_v3MinG.x > vertexList[i].x) m_v3MinG.x = vertexList[i].x;
+
+		if (m_v3MaxG.y < vertexList[i].y) m_v3MaxG.y = vertexList[i].y;
+		else if (m_v3MinG.y > vertexList[i].y) m_v3MinG.y = vertexList[i].y;
+
+		if (m_v3MaxG.z < vertexList[i].z) m_v3MaxG.z = vertexList[i].z;
+		else if (m_v3MinG.z > vertexList[i].z) m_v3MinG.z = vertexList[i].z;
+	}
+
 	//----------------------------------------
 
 	//we calculate the distance between min and max vectors

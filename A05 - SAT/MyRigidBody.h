@@ -1,5 +1,5 @@
 /*----------------------------------------------
-Programmer: Alberto Bobadilla (labigm@gmail.com)
+Programmer: Aidan Kaufman (ak3012@gmail.com)
 Date: 2017/06
 ----------------------------------------------*/
 #ifndef __MYRIGIDBODY_H_
