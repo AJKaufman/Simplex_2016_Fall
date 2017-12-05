@@ -21,7 +21,7 @@ void Application::InitVariables(void)
 		matrix4 m4Position = glm::translate(v3Position);
 		m_pEntityMngr->SetModelMatrix(m4Position);
 		m_pEntityMngr->UsePhysicsSolver();
-		//m_pEntityMngr->SetMass(i+1);
+		//m_pEntityMngr->SetMass(i - 0.1f);
 	}
 }
 void Application::Update(void)
