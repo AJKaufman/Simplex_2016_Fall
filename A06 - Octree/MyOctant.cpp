@@ -49,17 +49,19 @@ float Simplex::MyOctant::GetSize(void)
 	return 0.0f;
 }
 
-vector3 Simplex::MyOctant::GetCenterGlobal(void)
+Simplex::vector3 Simplex::MyOctant::GetCenterGlobal(void)
 {
 	return vector3();
 }
 
-vector3 Simplex::MyOctant::GetMinGlobal(void)
+Simplex::vector3 Simplex::MyOctant::GetMinGlobal(void)
 {
+	
+
 	return vector3();
 }
 
-vector3 Simplex::MyOctant::GetMaxGlobal(void)
+Simplex::vector3 Simplex::MyOctant::GetMaxGlobal(void)
 {
 	return vector3();
 }
@@ -88,23 +90,23 @@ void Simplex::MyOctant::ClearEntityList(void)
 void Simplex::MyOctant::Subdivide(void)
 {
 	m_pChild[0] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
-	m_pChild[1] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
-	m_pChild[2] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
-	m_pChild[3] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
+	m_pChild[1] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
+	m_pChild[2] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
+	m_pChild[3] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
 
-	m_pChild[4] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
-	m_pChild[5] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
-	m_pChild[6] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
-	m_pChild[7] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
+	m_pChild[4] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
+	m_pChild[5] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
+	m_pChild[6] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
+	m_pChild[7] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
 
 }
 
-MyOctant * Simplex::MyOctant::GetChild(uint a_nChild)
+Simplex::MyOctant * Simplex::MyOctant::GetChild(uint a_nChild)
 {
 	return nullptr;
 }
 
-MyOctant * Simplex::MyOctant::GetParent(void)
+Simplex::MyOctant * Simplex::MyOctant::GetParent(void)
 {
 	return nullptr;
 }
@@ -131,7 +133,7 @@ void Simplex::MyOctant::AssignIDtoEntity(void)
 {
 }
 
-uint Simplex::MyOctant::GetOctantCount(void)
+Simplex::uint Simplex::MyOctant::GetOctantCount(void)
 {
 	return uint();
 }
