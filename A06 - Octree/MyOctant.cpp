@@ -2,10 +2,23 @@
 
 Simplex::MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 {
-	if (a_nMaxLevel - 1 > 0) {
-		MyOctant::MyOctant(a_nMaxLevel - 1, a_nIdealEntityCount);
-		for (uint i = 0; i < m_uChildren; ++i) {
 
+	// If this is the first Octant, this will be the root
+	if (m_lChild.size() == 0)	m_pRoot = this;
+
+	// Assign the id of this Octant
+	m_uID = m_lChild.size();
+
+	// If there are still subdivisions to make, make them
+	if (a_nMaxLevel < m_uOctantCount) {
+
+		// Append the lChild list with this octant
+		m_lChild[m_lChild.size()] = this;
+
+		// Recursively call the creation of an octant
+		MyOctant::MyOctant(a_nMaxLevel, a_nIdealEntityCount);
+		for (uint i = 0; i < m_uChildren; ++i) {
+			
 		}
 	}
 
@@ -13,6 +26,8 @@ Simplex::MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 
 Simplex::MyOctant::MyOctant(vector3 a_v3Center, float a_fSize)
 {
+
+
 
 }
 
@@ -22,7 +37,7 @@ Simplex::MyOctant::MyOctant(MyOctant const & other)
 
 Simplex::MyOctant::~MyOctant(void)
 {
-	//SafeDelete(m_uID&);
+	SafeDelete(m_lChild[m_uID]);
 }
 
 void Simplex::MyOctant::Swap(MyOctant & other)
@@ -72,15 +87,15 @@ void Simplex::MyOctant::ClearEntityList(void)
 
 void Simplex::MyOctant::Subdivide(void)
 {
-	m_pChild[0] = Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
-	m_pChild[1] = Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
-	m_pChild[2] = Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
-	m_pChild[3] = Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
+	m_pChild[0] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
+	m_pChild[1] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
+	m_pChild[2] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
+	m_pChild[3] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
 
-	m_pChild[4] = Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
-	m_pChild[5] = Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
-	m_pChild[6] = Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
-	m_pChild[7] = Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
+	m_pChild[4] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
+	m_pChild[5] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
+	m_pChild[6] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
+	m_pChild[7] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
 
 }
 
