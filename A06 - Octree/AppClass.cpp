@@ -46,6 +46,8 @@ void Application::Update(void)
 	//Update Entity Manager
 	m_pEntityMngr->Update();
 
+	//m_pEntityMngr->GetEntity(0)->AddToRenderList();
+
 	//Add objects to render list
 	m_pEntityMngr->AddEntityToRenderList(-1, true);
 }

@@ -20,6 +20,8 @@ class Application
 	uint m_uObjects = 0; //Number of objects in the scene
 	uint m_uOctantLevels = 0; //Number of levels in the octree
 	bool m_bUsingPhysics = false; //Are we using physics in the project?
+
+	Octant* myOctant;
 private:
 	String m_sProgrammer = "Alberto Bobadilla - labigm@rit.edu"; //programmer
 
