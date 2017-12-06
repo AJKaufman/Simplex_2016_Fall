@@ -5,7 +5,8 @@ Simplex::MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 {
 
 	// If this is the first Octant, this will be the root
-	m_pRoot = this;
+	if (m_pRoot != nullptr) m_pRoot = this;
+	else return;
 
 	// Store necessary variables
 	m_uOctantCount++;
@@ -31,15 +32,26 @@ Simplex::MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 		m_v3Max.x = glm::max(tempMax.x, m_v3Max.x);
 		m_v3Max.y = glm::max(tempMax.y, m_v3Max.y);
 		m_v3Max.z = glm::max(tempMax.z, m_v3Max.z);
+
+		/*
+				if(currentBlock->GetModelMatrix())
+		*/
 	}
 
 	// Assign the center
 	m_v3Center /= m_pEntityMngr->GetEntityCount();
 		
-	m_pMeshMngr->AddWireCubeToRenderList(matrix4(m_v3Center.x, m_v3Center.y, m_v3Center.z, 1.0f) * GetSize(), C_YELLOW);
+	// Draw the Wireframe
+	m_pMeshMngr->AddWireCubeToRenderList(glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(GetSize(), GetSize(), GetSize()), C_YELLOW);
 
 	// Array of 8 (or null) Children
 	// References to its entities
+
+	for (uint i = 0; i < m_pEntityMngr->GetEntityCount(); ++i) {
+		
+		MyEntity* currentBlock = m_pEntityMngr->GetEntity(i);
+
+	}
 
 }
 
@@ -97,17 +109,23 @@ void Simplex::MyOctant::ClearEntityList(void)
 {
 }
 
+
+// Subdivides the current octant into 8 children
 void Simplex::MyOctant::Subdivide(void)
 {
-	m_pChild[0] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f);
-	m_pChild[1] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
-	m_pChild[2] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
-	m_pChild[3] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
 
-	m_pChild[4] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
-	m_pChild[5] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
-	m_pChild[6] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
-	m_pChild[7] = &Simplex::MyOctant::MyOctant(m_v3Center / vector3(2.0f, 2.0f, 2.0f), m_v3Max.x - m_v3Min.x / 2.0f); // NOT DONE
+	float halfDistance = GetSize();
+	float childHalfDistance = GetSize() / 2;
+
+	m_pChild[0] = &Simplex::MyOctant::MyOctant(GetCenterGlobal() - vector3(childHalfDistance, childHalfDistance, childHalfDistance), GetSize());
+	m_pChild[1] = &Simplex::MyOctant::MyOctant(GetCenterGlobal() - vector3(childHalfDistance, -childHalfDistance, childHalfDistance), GetSize()); 
+	m_pChild[2] = &Simplex::MyOctant::MyOctant(GetCenterGlobal() - vector3(-childHalfDistance, childHalfDistance, childHalfDistance), GetSize()); 
+	m_pChild[3] = &Simplex::MyOctant::MyOctant(GetCenterGlobal() - vector3(-childHalfDistance, -childHalfDistance, childHalfDistance), GetSize());
+																 
+	m_pChild[4] = &Simplex::MyOctant::MyOctant(GetCenterGlobal() - vector3(childHalfDistance, childHalfDistance, -childHalfDistance), GetSize()); 
+	m_pChild[5] = &Simplex::MyOctant::MyOctant(GetCenterGlobal() - vector3(childHalfDistance, -childHalfDistance, -childHalfDistance), GetSize());
+	m_pChild[6] = &Simplex::MyOctant::MyOctant(GetCenterGlobal() - vector3(-childHalfDistance, childHalfDistance, -childHalfDistance), GetSize());
+	m_pChild[7] = &Simplex::MyOctant::MyOctant(GetCenterGlobal() - vector3(-childHalfDistance, -childHalfDistance, -childHalfDistance), GetSize());
 
 }
 
