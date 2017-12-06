@@ -58,6 +58,8 @@ void Application::Display(void)
 
 	//display octree
 	//m_pRoot->Display();
+
+	MeshManager* MyMesh;
 	
 	// draw a skybox
 	m_pMeshMngr->AddSkyboxToRenderList();

@@ -36,26 +36,10 @@ Simplex::MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 	// Assign the center
 	m_v3Center /= m_pEntityMngr->GetEntityCount();
 		
+	m_pMeshMngr->AddWireCubeToRenderList(matrix4(m_v3Center.x, m_v3Center.y, m_v3Center.z, 1.0f) * GetSize(), C_YELLOW);
 
-
-
-	// If there are still subdivisions to make, make them
-	if (m_uMaxLevel < m_uOctantCount) {
-
-		
-
-		// Array of 8 (or null) Children
-		// References to its entities
-
-		// Append the lChild list with this octant
-		m_lChild[m_lChild.size()] = this; // AIDAN is this right?
-
-		// Recursively call the creation of an octant
-		MyOctant::MyOctant(a_nMaxLevel, a_nIdealEntityCount);
-		for (uint i = 0; i < m_uChildren; ++i) {
-			
-		}
-	}
+	// Array of 8 (or null) Children
+	// References to its entities
 
 }
 
@@ -79,7 +63,7 @@ void Simplex::MyOctant::Swap(MyOctant & other)
 {
 }
 
-// Find the width
+// Gets the Width
 float Simplex::MyOctant::GetSize(void){return m_v3Max.x - m_v3Min.x;}
 
 // Finds the center of this octant
