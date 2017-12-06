@@ -17,7 +17,7 @@ void Application::InitVariables(void)
 #endif
 	int nSquare = static_cast<int>(std::sqrt(uInstances));
 	m_uObjects = nSquare * nSquare;
-	uint uIndex = -1;
+	uIndex = -1;
 	for (int i = 0; i < nSquare; i++)
 	{
 		for (int j = 0; j < nSquare; j++)

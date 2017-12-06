@@ -49,22 +49,20 @@ float Simplex::MyOctant::GetSize(void)
 	return 0.0f;
 }
 
+// Finds the center of this octant
 Simplex::vector3 Simplex::MyOctant::GetCenterGlobal(void)
 {
-	return vector3();
+	return m_v3Center;
 }
 
+// Finds the min point of this octant
 Simplex::vector3 Simplex::MyOctant::GetMinGlobal(void)
 {
-	
-
-	return vector3();
+	return m_v3Min;
 }
 
-Simplex::vector3 Simplex::MyOctant::GetMaxGlobal(void)
-{
-	return vector3();
-}
+// Finds the max point of this octant
+Simplex::vector3 Simplex::MyOctant::GetMaxGlobal(void){return m_v3Max;}
 
 bool Simplex::MyOctant::IsColliding(uint a_uRBIndex)
 {
