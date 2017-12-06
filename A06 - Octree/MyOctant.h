@@ -6,6 +6,7 @@ Date: 2017/07
 #define __MYOCTANTCLASS_H_
 
 #include "MyEntityManager.h"
+#include "AppClass.h"
 
 namespace Simplex
 {
@@ -25,7 +26,6 @@ class MyOctant
 
 	MeshManager* m_pMeshMngr = nullptr;//Mesh Manager singleton
 	MyEntityManager* m_pEntityMngr = nullptr; //Entity Manager Singleton
-	MyRigidBody* m_pRigidBody = nullptr; // Rigidbody
 
 	vector3 m_v3Center = vector3(0.0f); //Will store the center point of the octant
 	vector3 m_v3Min = vector3(0.0f); //Will store the minimum vector of the octant
@@ -148,6 +148,12 @@ public:
 	OUTPUT: ---
 	*/
 	void Subdivide(void);
+	/*
+	USAGE: Adds an object to the root octant to be stored within our octree
+	ARGUMENTS: ---
+	OUTPUT: ---
+	*/
+	void AddObject(String uniqueID);
 	/*
 	USAGE: returns the child specified in the index
 	ARGUMENTS: uint a_nChild -> index of the child (from 0 to 7)
