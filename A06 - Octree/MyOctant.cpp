@@ -34,6 +34,12 @@ Simplex::MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 		m_v3Max.z = glm::max(tempMax.z, m_v3Max.z);
 
 		/*
+			1) Check if the current block is in the m_v3Min and m_v3Max.
+			2) If so, add it to this octant's entity list. (Might be done with the entity's uniqueID)
+			3) (this step might have to come after the m_v3Center is established)
+				Once you pass the a_nIdealEntityCount, call MyOctant again, maybe using the other constructor
+				
+				
 				if(currentBlock->GetModelMatrix())
 		*/
 	}
