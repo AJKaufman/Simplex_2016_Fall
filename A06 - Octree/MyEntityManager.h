@@ -2,8 +2,11 @@
 Programmer: Alberto Bobadilla (labigm@gmail.com)
 Date: 2017/07
 ----------------------------------------------*/
+/*
 #ifndef __MYENTITYMANAGER_H_
 #define __MyENTITYMANAGER_H_
+*/
+#pragma once
 
 #include "MyEntity.h"
 
@@ -287,7 +290,7 @@ private:
 
 } //namespace Simplex
 
-#endif //__MYENTITYMANAGER_H_
+//#endif //__MYENTITYMANAGER_H_
 
 /*
 USAGE:

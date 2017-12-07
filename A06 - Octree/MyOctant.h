@@ -6,7 +6,6 @@ Date: 2017/07
 #define __MYOCTANTCLASS_H_
 
 #include "MyEntityManager.h"
-#include "AppClass.h"
 
 namespace Simplex
 {
